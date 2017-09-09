@@ -7,14 +7,14 @@ def creatFile(file):
 
 def getHTMLText(url,file):
     try:
-        kv = {'User-Agent':'Mozilla/5.0'}
-        res = requests.get(url, headers = kv)
-        print(res.request.headers)
+        kv = {'wd':'python'}
+        res = requests.get(url, params = kv)
+        print('URL: ' + res.request.url)
         print(res.status_code)
         res.raise_for_status()
         res.encoding = res.apparent_encoding
-        print(res.text[1000:2000])
-        file.write(str(res.text[1000:2000]))
+        print(res.text)
+        file.write(str(res.text))
         file.close()
         return 'Ok'
     except Exception as err:
@@ -23,7 +23,7 @@ def getHTMLText(url,file):
 
 if __name__ == "__main__":
     # url="https://www.lagou.com"
-    url="https://www.amazon.cn/gp/product/B01M8L5Z3Y"
+    url="https://www.baidu.com/s"
     index_file = "index.txt"
     file = creatFile(index_file)
     print(getHTMLText(url,file))
