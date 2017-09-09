@@ -2,16 +2,16 @@
 import requests
 
 def creatFile(file):
-    fp = open(file,"wb")
+    fp = open(file,"w")
     return fp
 
 def getHTMLText(url,file):
     try:
-        res = requests.get(url)
+        res = requests.get(url+'117.136.45.145')
         print('URL: ' + res.request.url)
         print(res.status_code)
         res.raise_for_status()
-        file.write(res.content)
+        file.write(res.text)
         file.close()
         return 'Ok'
     except Exception as err:
@@ -20,8 +20,8 @@ def getHTMLText(url,file):
 
 if __name__ == "__main__":
     # url="https://www.lagou.com"
-    url="http://img06.tooopen.com/images/20160921/tooopen_sy_179583447187.jpg"
-    index_file = "index.jpg"
+    url="http://m.ip138.com/ip.asp?ip="
+    index_file = "index.txt"
     file = creatFile(index_file)
     print(getHTMLText(url,file))
     
