@@ -2,19 +2,16 @@
 import requests
 
 def creatFile(file):
-    fp = open(file,"w")
+    fp = open(file,"wb")
     return fp
 
 def getHTMLText(url,file):
     try:
-        kv = {'wd':'python'}
-        res = requests.get(url, params = kv)
+        res = requests.get(url)
         print('URL: ' + res.request.url)
         print(res.status_code)
         res.raise_for_status()
-        res.encoding = res.apparent_encoding
-        print(res.text)
-        file.write(str(res.text))
+        file.write(res.content)
         file.close()
         return 'Ok'
     except Exception as err:
@@ -23,8 +20,8 @@ def getHTMLText(url,file):
 
 if __name__ == "__main__":
     # url="https://www.lagou.com"
-    url="https://www.baidu.com/s"
-    index_file = "index.txt"
+    url="http://img06.tooopen.com/images/20160921/tooopen_sy_179583447187.jpg"
+    index_file = "index.jpg"
     file = creatFile(index_file)
     print(getHTMLText(url,file))
     

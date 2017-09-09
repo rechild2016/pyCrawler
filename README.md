@@ -6,3 +6,6 @@
 	
    baidu.com
     submit a search request
+
+   tooopen.com
+    save a picture to the local
