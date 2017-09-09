@@ -1,0 +1,18 @@
+User-agent: Jobuispider
+Disallow:  /
+
+User-agent: *
+Disallow: /resume/
+Disallow: /nearBy/
+Disallow: /ologin/
+Disallow: /jobs/list_*
+Disallow: /one.lagou.com
+Disallow: /ns3.lagou.com
+Disallow: /hr.lagou.com
+Disallow: /two.lagou.com
+Disallow: /t/temp1/
+Disallow: /center/preview.html
+Disallow: /center/previewApp.html
+Disallow: /*?utm_source=*
+Allow: /gongsi/interviewExperiences.html?companyId=*
+Disallow: /*?*

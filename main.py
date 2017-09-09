@@ -17,7 +17,6 @@ def getHTMLText(url,file):
         print("error is ==>",err)
         return "Error"
 
-
 if __name__ == "__main__":
     url="https://www.lagou.com"
     index_file = "index.txt"
