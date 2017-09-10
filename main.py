@@ -1,5 +1,6 @@
 #user/bin/python3.6
 import requests
+from bs4 import BeautifulSoup
 
 def creatFile(file):
     fp = open(file,"w")
@@ -7,11 +8,14 @@ def creatFile(file):
 
 def getHTMLText(url,file):
     try:
-        res = requests.get(url+'117.136.45.145')
-        print('URL: ' + res.request.url)
+        res = requests.get(url)
         print(res.status_code)
         res.raise_for_status()
-        file.write(res.text)
+        demo = res.text
+        print(demo)
+        soup = BeautifulSoup(demo,'html.parser')
+        print(soup.prettify())
+        file.write(soup.prettify())
         file.close()
         return 'Ok'
     except Exception as err:
@@ -20,7 +24,7 @@ def getHTMLText(url,file):
 
 if __name__ == "__main__":
     # url="https://www.lagou.com"
-    url="http://m.ip138.com/ip.asp?ip="
+    url="http://python123.io/ws/demo.html"
     index_file = "index.txt"
     file = creatFile(index_file)
     print(getHTMLText(url,file))
