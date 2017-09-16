@@ -14,4 +14,5 @@
     submit ip address inquire,and get return info
 
    python123.io
-    parser the web page spource
+    1.parser the web page spource
+    2.add traversal
