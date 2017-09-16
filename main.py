@@ -16,17 +16,8 @@ def getHTMLText(url,file):
         soup = BeautifulSoup(demo,'html.parser')
         print(soup.prettify())
         print('\n<=================================>\n')
-        # for parent in soup.a.parents:
-        #     if parent is None:
-        #         print(parent)
-        #     else:
-        #         print(parent.name)
-        #遍历后续节点
-        for sibling in soup.a.next_siblings:
-            print(sibling)
-        #遍历后续节点
-        for sibling in soup.a.previous_siblings:
-            print(sibling)
+        for link in soup.find_all('a'):
+            print(link.get('href'))
         # file.write(soup.prettify())
         # file.close()
         return 'Ok' 
