@@ -17,3 +17,4 @@
     1.parser the web page spource
     2.add traversal
     3.find all URL
+    4.find_all()

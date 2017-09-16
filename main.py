@@ -1,6 +1,7 @@
 #user/bin/python3.6
 import requests
 from bs4 import BeautifulSoup
+import re
 
 def creatFile(file):
     fp = open(file,"w")
@@ -16,8 +17,8 @@ def getHTMLText(url,file):
         soup = BeautifulSoup(demo,'html.parser')
         print(soup.prettify())
         print('\n<=================================>\n')
-        for link in soup.find_all('a'):
-            print(link.get('href'))
+        for tag in soup.find_all(id = re.compile('link')):
+            print(tag)
         # file.write(soup.prettify())
         # file.close()
         return 'Ok' 
