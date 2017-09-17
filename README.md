@@ -18,3 +18,6 @@
     2.add traversal
     3.find all URL
     4.find_all()
+
+   zuihaodaxue.com
+    1.get University ranking
