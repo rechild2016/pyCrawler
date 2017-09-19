@@ -33,10 +33,11 @@ def fillUnivList(ulist, html):
             ulist.append([tds[0].string, tds[1].string, tds[2].string])
 
 def printUnivList(ulist, num):
-    print("{:^10}\t{:^6}\t{:^10}".format(u"排名", u"学校",u"省份"))
+    tplt = "{0:^10}\t{1:{3}^10}\t{2:^10}"
+    print(tplt.format(u"排名", u"学校",u"省份",chr(12288)))
     for i in range(num):
         item=ulist[i]
-        print("{:^10}\t{:^10}\t{:^10}".format(item[0], item[1], item[2]))
+        print(tplt.format(item[0], item[1], item[2],chr(12288)))
 if __name__ == "__main__":
     # url="https://www.lagou.com"
     url="http://www.zuihaodaxue.com/zuihaodaxuepaiming2016.html"
