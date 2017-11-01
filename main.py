@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import bs4
-# import re
+import re
 import string
 import io
 import sys
@@ -18,7 +18,7 @@ sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
 def getHTMLText(url,page):
     try:
         url = url.format(page = page)
-        res = requests.get(url, timeout = 20)
+        res = requests.get(url, timeout = 80)
         print(res.status_code)
         # res.raise_for_status()
         # res.encoding=res.apparent_encoding
@@ -33,8 +33,19 @@ def getRentingInfo(text):
     house_list = html.select(".list > li")
     return house_list
 
+def getHouseInfo(house):
+    house_title = house.select("h2")[0].string
+    house_url = urljoin(url, house.select("a")[0]["href"])
+    room = house.select(".room")[0]
+    s="".join(str(room).split())
+    result=re.findall(r">(.*)<",s)[0]   #"1室1厅1卫20m²朝东<b>可短租</b>"
+    roominfo = result.split("<b>")[0]
+    
+    house_money = house.select(".money")[0].select("b")[0].string
+    houseInfo={"title":house_title,"url":house_url,"room":roominfo,"money":house_money}
+    return houseInfo
 
-url = "http://bj.58.com/pinpaigongyu/pn/{page}/?minprice=2000_4000"
+url = "http://nj.58.com/pinpaigongyu/pn/{page}/?"
 
 # Open database connection
 db = pymysql.connect("localhost","root","lijie110","test_schema" )
@@ -45,22 +56,17 @@ cursor = db.cursor()
 text = getHTMLText(url,0)
 house_list = getRentingInfo(text)
 
+houseInfos=[]
 for house in house_list:
-    mydivs = house.findAll("p",{ "class" : "room" })
-    # print(mydivs)
-    for div in mydivs:
-        for child in div.children:
-            if(child.string != "\n"):
-                s = str(child.string)
-                s1 = " ".join(s.split())
-                print (s1,type(s1))
-                try:
-                    cursor.execute("""INSERT INTO test_schema.info(it) VALUES (%s)""",(s1.encode('utf-8')))
-                    db.commit()
-                    print("-----------------------")
-                except:
-                    db.rollback()
-                
-    print("====================================\n")
+    infodir = getHouseInfo(house)
+    houseInfos.append(infodir)
+   
+    # try:
+    #     cursor.execute("""INSERT INTO test_schema.info(it) VALUES (%s)""",(s1.encode('utf-8')))
+    #     db.commit()
+    #     print("-----------------------")
+    # except:
+    #     db.rollback()
+    print(infodir,'\n')
 
 db.close()
