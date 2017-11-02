@@ -36,13 +36,15 @@ def getRentingInfo(text):
 def getHouseInfo(house):
     house_title = house.select("h2")[0].string
     house_url = urljoin(url, house.select("a")[0]["href"])
+    house_id = house.select("a")[0]["href"].split(".shtml")[0]
     room = house.select(".room")[0]
     s="".join(str(room).split())
     result=re.findall(r">(.*)<",s)[0]   #"1室1厅1卫20m²朝东<b>可短租</b>"
     roominfo = result.split("<b>")[0]
     
     house_money = house.select(".money")[0].select("b")[0].string
-    houseInfo={"title":house_title,"url":house_url,"room":roominfo,"money":house_money}
+    houseInfo={"title":house_title,"url":house_url,"room":roominfo,
+                "money":house_money,"id":house_id}
     return houseInfo
 
 url = "http://nj.58.com/pinpaigongyu/pn/{page}/?"
