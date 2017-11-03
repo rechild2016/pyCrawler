@@ -50,7 +50,7 @@ def getHouseInfo(house):
 url = "http://nj.58.com/pinpaigongyu/pn/{page}/?"
 
 # Open database connection
-db = pymysql.connect("localhost","root","lijie110","test_schema" )
+db = pymysql.connect("localhost","root","lijie110","58.com" )
 # prepare a cursor object using cursor() method
 cursor = db.cursor()
 
@@ -62,13 +62,17 @@ houseInfos=[]
 for house in house_list:
     infodir = getHouseInfo(house)
     houseInfos.append(infodir)
-   
-    # try:
-    #     cursor.execute("""INSERT INTO test_schema.info(it) VALUES (%s)""",(s1.encode('utf-8')))
-    #     db.commit()
-    #     print("-----------------------")
-    # except:
-    #     db.rollback()
+    try:
+        cursor.execute("""INSERT INTO `58.com`.rentinginfo(id,title,url,room,cost) VALUES (%s,%s,%s,%s,%s)""",
+              ( infodir["id"].encode('utf-8'), infodir["title"].encode('utf-8'),
+                infodir["url"].encode('utf-8'), infodir["room"].encode('utf-8'),
+                infodir["money"].encode('utf-8')   )
+              )
+        db.commit()
+        print("Inset Success!")
+    except:
+        print("Insert Error!")
+        db.rollback()
     print(infodir,'\n')
 
 db.close()
