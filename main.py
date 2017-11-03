@@ -36,19 +36,21 @@ def getRentingInfo(text):
 def getHouseInfo(house):
     house_title = house.select("h2")[0].string
     house_url = urljoin(url, house.select("a")[0]["href"])
+    house_id = house.select("a")[0]["href"].split(".shtml")[0]
     room = house.select(".room")[0]
     s="".join(str(room).split())
     result=re.findall(r">(.*)<",s)[0]   #"1室1厅1卫20m²朝东<b>可短租</b>"
     roominfo = result.split("<b>")[0]
     
     house_money = house.select(".money")[0].select("b")[0].string
-    houseInfo={"title":house_title,"url":house_url,"room":roominfo,"money":house_money}
+    houseInfo={"title":house_title,"url":house_url,"room":roominfo,
+                "money":house_money,"id":house_id}
     return houseInfo
 
 url = "http://nj.58.com/pinpaigongyu/pn/{page}/?"
 
 # Open database connection
-db = pymysql.connect("localhost","root","lijie110","test_schema" )
+db = pymysql.connect("localhost","root","lijie110","58.com" )
 # prepare a cursor object using cursor() method
 cursor = db.cursor()
 
@@ -60,13 +62,17 @@ houseInfos=[]
 for house in house_list:
     infodir = getHouseInfo(house)
     houseInfos.append(infodir)
-   
-    # try:
-    #     cursor.execute("""INSERT INTO test_schema.info(it) VALUES (%s)""",(s1.encode('utf-8')))
-    #     db.commit()
-    #     print("-----------------------")
-    # except:
-    #     db.rollback()
+    try:
+        cursor.execute("""INSERT INTO `58.com`.rentinginfo(id,title,url,room,cost) VALUES (%s,%s,%s,%s,%s)""",
+              ( infodir["id"].encode('utf-8'), infodir["title"].encode('utf-8'),
+                infodir["url"].encode('utf-8'), infodir["room"].encode('utf-8'),
+                infodir["money"].encode('utf-8')   )
+              )
+        db.commit()
+        print("Inset Success!")
+    except:
+        print("Insert Error!")
+        db.rollback()
     print(infodir,'\n')
 
 db.close()
